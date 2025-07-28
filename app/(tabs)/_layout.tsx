@@ -34,6 +34,22 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
+        name="add_task"
+        options={{
+          title: 'Add Task',
+          tabBarIcon: ({ color }) => <Ionicons size={28} name="add-circle" color={color} />
+        }}
+      />
+
+      <Tabs.Screen
+        name="dashboard"
+        options={{
+          title: 'Dashboard',
+          tabBarIcon: ({ color }) => <Ionicons size={28} name="stats-chart" color={color} />
+        }}
+      />
+
+      <Tabs.Screen
         name="sign_out"
         options={{
           title: 'Sign Out',
