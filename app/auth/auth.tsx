@@ -105,5 +105,6 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 10,
+    backgroundColor: "#74b1c2ff",
   },
 });
