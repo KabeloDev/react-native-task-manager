@@ -1,29 +1,61 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { AuthProvider, useAuth } from "@/app_context/auth_context";
+import { Stack } from "expo-router";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, View } from "react-native";
+import { PaperProvider } from "react-native-paper";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+function AppStack() {
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(true);
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+  useEffect(() => {
+    setTimeout(() => {
+      if (user) {
+        console.log("User is authenticated:", user);
+        setLoading(false);
+      } else {
+        console.log("No user authenticated:", user);
+        setLoading(false);
+      }
+    }, 2000);
+  }, [user]);
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
+  if (loading) {
+    return <LoadingComponent />;
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <Stack screenOptions={{ headerShown: false }}>
+      {!user ? (
+        <Stack.Screen name="auth/auth" />
+      ) : (
+        <>
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="+not-found" />
+        </>
+      )}
+    </Stack>
   );
 }
+
+export function LoadingComponent() {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <ActivityIndicator size="large" />
+    </View>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <PaperProvider>
+        <SafeAreaProvider>
+          <AppStack />
+        </SafeAreaProvider>
+      </PaperProvider>
+    </AuthProvider>
+  );
+}
+
