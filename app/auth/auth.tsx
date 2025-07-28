@@ -6,10 +6,11 @@ import { Button, Text, TextInput, useTheme } from "react-native-paper";
 
 export default function AuthScreen() {
   const [isSignUp, setIsSignUp] = useState(false);
-  const { user, signUp, signIn } = useAuth();
+  const { signUp, signIn } = useAuth();
   const router = useRouter();
   const theme = useTheme();
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -19,6 +20,12 @@ export default function AuthScreen() {
   }
 
   const handleAuth = async () => {
+
+    if (isSignUp && !name) {
+      setError("Please enter your username.");
+      return;
+    }
+
     if (!email || !password) {
       setError("Please fill in all fields.");
       return;
@@ -27,13 +34,13 @@ export default function AuthScreen() {
     if (password.length < 6) {
       setError("Password must be at least 6 characters long.");
       return;
-    } 
+    }
 
     setError("");
 
     try {
       if (isSignUp) {
-        const error = await signUp(email, password);
+        const error = await signUp(name, email, password);
         if (error) {
           setError("Sign Up failed. Please try again.");
           return;
@@ -55,29 +62,60 @@ export default function AuthScreen() {
 
   return <KeyboardAvoidingView behavior={Platform.OS === "android" ? "height" : "padding"} style={{ flex: 1 }}>
     <View style={{ flex: 1, justifyContent: "center", padding: 20 }} >
-      <Text style = {styles.headerText}>{isSignUp ? "Create Account" : "Welcome Back"}</Text>
+      <Text style={styles.headerText}>{isSignUp ? "Create Account" : "Welcome Back"}</Text>
 
-      <TextInput
-        label="Email"
-        placeholder="example@gmail.com" 
-        autoCapitalize="none" 
-        keyboardType="email-address" 
-        mode="outlined"
-        style={styles.emailInput}
-        onChangeText={setEmail}
-       />
+      {isSignUp ?
+        <>
+          <TextInput
+            label="Username"
+            placeholder="your username"
+            autoCapitalize="none"
+            keyboardType="default"
+            mode="outlined"
+            style={styles.userNameInput}
+            onChangeText={setName} />
 
-      <TextInput
-        label="Password"
-        placeholder="your password" 
-        autoCapitalize="none" 
-        secureTextEntry={true}
-        keyboardType="default"
-        mode="outlined"
-        style={styles.passwordInput}
-        onChangeText={setPassword}
-      />
+          <TextInput
+            label="Email"
+            placeholder="example@gmail.com"
+            autoCapitalize="none"
+            keyboardType="email-address"
+            mode="outlined"
+            style={styles.emailInput}
+            onChangeText={setEmail} />
 
+          <TextInput
+            label="Password"
+            placeholder="your password"
+            autoCapitalize="none"
+            secureTextEntry={true}
+            keyboardType="default"
+            mode="outlined"
+            style={styles.passwordInput}
+            onChangeText={setPassword} />
+        </>
+        :
+        <>
+          <TextInput
+            label="Email"
+            placeholder="example@gmail.com"
+            autoCapitalize="none"
+            keyboardType="email-address"
+            mode="outlined"
+            style={styles.emailInput}
+            onChangeText={setEmail} />
+
+          <TextInput
+            label="Password"
+            placeholder="your password"
+            autoCapitalize="none"
+            secureTextEntry={true}
+            keyboardType="default"
+            mode="outlined"
+            style={styles.passwordInput}
+            onChangeText={setPassword} />
+        </>
+      }
       {error ? <Text style={{ color: theme.colors.error }}>{error}</Text> : null}
 
       <Button mode="contained" style={styles.button} onPress={handleAuth}>{isSignUp ? "Sign Up" : "Sign In"}</Button>
@@ -96,6 +134,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
+  },
+  userNameInput: {
+    marginBottom: 10,
   },
   emailInput: {
     marginBottom: 10,
