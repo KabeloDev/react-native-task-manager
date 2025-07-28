@@ -59,7 +59,7 @@ export default function AddTaskScreen() {
                     }))} />
 
                 <Button mode="contained" disabled={!title || !description} onPress={handleSubmit} style={styles.addButton}>
-                    Add Habit
+                    Add Task
                 </Button>
 
                 {error && <Text style={{ color: theme.colors.error, marginTop: 10 }}>{error}</Text>}
