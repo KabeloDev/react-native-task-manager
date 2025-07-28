@@ -1,11 +1,17 @@
 import { Image } from 'expo-image';
 import { StyleSheet } from 'react-native';
 
+import { useAuth } from '@/app_context/auth_context';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
 export default function HomeScreen() {
+  const { user } = useAuth();
+
+  console.log("User in HomeScreen:", user);
+  
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -16,7 +22,7 @@ export default function HomeScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
+        <ThemedText type="title">Welcome, {user?.name}!</ThemedText>
       </ThemedView>
     </ParallaxScrollView>
   );
