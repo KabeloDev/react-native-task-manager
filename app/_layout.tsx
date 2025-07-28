@@ -30,10 +30,7 @@ function AppStack() {
       {!user ? (
         <Stack.Screen name="auth/auth" />
       ) : (
-        <>
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="+not-found" />
-        </>
+        <Stack.Screen name="(tabs)" />
       )}
     </Stack>
   );
