@@ -158,7 +158,7 @@ export default function HomeScreen() {
                       <Button mode="contained-tonal" onPress={() => setIsComplete(!isComplete)} style={{ marginBottom: 20, backgroundColor: theme.colors.background }}>
                         {isComplete ? "Mark as Complete" : "Mark as Incomplete"}
                       </Button>
-                      <Button mode="contained" onPress={() => handleUpdateTask(id)}>Save</Button>
+                      <Button mode="contained" disabled={!title || !description} onPress={() => handleUpdateTask(id)}>Save</Button>
                     </ScrollView>
                   </View>
                 </Modal>

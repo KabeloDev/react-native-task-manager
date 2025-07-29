@@ -38,7 +38,6 @@ export default function AddTaskScreen() {
         } catch (error) {
             setError(error instanceof Error ? error.message : "Failed to add task");
         }
-
     }
 
     return (
@@ -48,9 +47,9 @@ export default function AddTaskScreen() {
                 style={styles.reactLogo}
             />
             <View style={styles.taskForm}>
-                <TextInput label="Title" mode="outlined" onChangeText={setTitle} style={ styles.formMargin } />
-                <TextInput label="Description" mode="outlined" multiline numberOfLines={4} style={ styles.formMargin } onChangeText={setDescription} />
-                <SegmentedButtons style={ styles.formMargin }
+                <TextInput label="Title" mode="outlined" onChangeText={setTitle} style={styles.formMargin} />
+                <TextInput label="Description" mode="outlined" multiline numberOfLines={4} style={styles.formMargin} onChangeText={setDescription} />
+                <SegmentedButtons style={styles.formMargin}
                     value={frequency} onValueChange={(value) => setFrequency(value as Frequency)}
                     buttons={FREQUENCY_OPTIONS.map((item) => ({
                         value: item,
@@ -78,10 +77,10 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         padding: 10
     },
-    formMargin : {
+    formMargin: {
         marginBottom: 20
     },
-    addButton : {
+    addButton: {
         marginTop: 20,
         backgroundColor: '#74b1c2ff'
     },
