@@ -17,6 +17,8 @@ export default function HomeScreen() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [titleUpdate, setTitleUpdate] = useState("");
+  const [descriptionUpdate, setDescriptionUpdate] = useState("");
   const [frequency, setFrequency] = useState<Frequency>("daily");
   const [isComplete, setIsComplete] = useState(false);
   const [id, setId] = useState("");
@@ -54,9 +56,13 @@ export default function HomeScreen() {
     }
   }
 
-  const openModal = async (status: boolean, taskId: string) => {
+  const openModal = async (status: boolean, taskId: string, title: string, description: string) => {
     console.log('Modal status: ' + status + ' Task Id: ' + taskId);
     setIsModalVisible(status);
+    setTitle(title);
+    setTitleUpdate(title);
+    setDescription(description);
+    setDescriptionUpdate(description);
     setId(taskId);
   }
 
@@ -129,7 +135,7 @@ export default function HomeScreen() {
               <Divider style={styles.divider}></Divider>
               <View style={{ flexDirection: "row", justifyContent: "flex-end", alignItems: "center" }}>
                 <IconButton size={20} icon="delete-outline" onPress={() => handleDeleteTask(task.$id)}></IconButton>
-                <IconButton size={20} icon="square-edit-outline" onPress={() => openModal(true, task.$id)}></IconButton>
+                <IconButton size={20} icon="square-edit-outline" onPress={() => openModal(true, task.$id, task.title, task.description)}></IconButton>
               </View>
               <Portal>
                 <Modal
@@ -141,16 +147,16 @@ export default function HomeScreen() {
                   <View style={styles.editview} >
                     <ScrollView>
                       <Text variant="titleLarge">Update Task</Text>
-                      <TextInput label="Title" mode="outlined" onChangeText={setTitle} />
-                      <TextInput label="Description" mode="outlined" multiline numberOfLines={4} style={{ marginBottom: 10 }} onChangeText={setDescription} />
+                      <TextInput defaultValue={titleUpdate} label="Title" mode="outlined" onChangeText={setTitle} />
+                      <TextInput defaultValue={descriptionUpdate} label="Description" mode="outlined" multiline numberOfLines={4} style={{ marginBottom: 10 }} onChangeText={setDescription} />
                       <SegmentedButtons style={{ marginBottom: 20 }}
                         value={frequency} onValueChange={(value) => setFrequency(value as Frequency)}
                         buttons={FREQUENCY_OPTIONS.map((frequency) => ({
                           value: frequency,
                           label: frequency.charAt(0).toUpperCase() + frequency.slice(1),
                         }))} />
-                      <Button icon={isComplete ? "tray-remove" : "checkbox-marked-circle-outline"} mode="contained-tonal" onPress={() => setIsComplete(!isComplete)} style={{ marginBottom: 20, backgroundColor: theme.colors.background }}>
-                        {isComplete ? "Mark as Incomplete" : "Mark as Complete"}
+                      <Button mode="contained-tonal" onPress={() => setIsComplete(!isComplete)} style={{ marginBottom: 20, backgroundColor: theme.colors.background }}>
+                        {isComplete ? "Mark as Complete" : "Mark as Incomplete"}
                       </Button>
                       <Button mode="contained" onPress={() => handleUpdateTask(id)}>Save</Button>
                     </ScrollView>
