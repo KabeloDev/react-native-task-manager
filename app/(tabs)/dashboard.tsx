@@ -1,16 +1,74 @@
-import { Image } from 'expo-image';
-import { StyleSheet, Text, View } from 'react-native';
+import { database, DATABASE_ID, TASKS_COLLECTION_ID } from '@/app_context/appwrite';
+import { useAuth } from '@/app_context/auth_context';
+import { Task } from '@/type/databases.type';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Query } from 'react-native-appwrite';
+import { BarChart, PieChart } from "react-native-gifted-charts";
+import { Badge, Text } from 'react-native-paper';
 
 
 export default function DashboardScreen() {
 
+    const { user } = useAuth();
+    const [tasks, setTasks] = useState<Task[]>();
+
+    console.log("User in DashboardScreen:", user);
+
+    const completeCount = tasks?.filter(task => task.isComplete === true).length;
+    const inCompleteCount = tasks?.filter(task => task.isComplete === false).length;
+    const pieData = [{ value: completeCount!, color: "green", text: "Complete", showText: true }, { value: inCompleteCount!, color: "darkorange", text: "Incomplete", showText: true }];
+    const barData = [{ value: completeCount, frontColor: "green" }, { value: inCompleteCount, frontColor: "darkorange" }];
+    const noValues = pieData.every(item => item.value === 0);
+
+    console.log('Completed tasks: ', completeCount);
+    console.log('Incomplete tasks: ', inCompleteCount);
+
+    useFocusEffect(
+        useCallback(() => {
+            if (!user) {
+                router.replace("/auth/auth");
+            } else {
+                fetchTasks();
+            }
+        }, [])
+    );
+
+    const fetchTasks = async () => {
+        try {
+            const response = await database.listDocuments(
+                DATABASE_ID,
+                TASKS_COLLECTION_ID,
+                [Query.equal("user_id", user?.$id ?? "")]
+            );
+            console.log("Tasks fetched:", response.documents);
+            setTasks(response.documents as unknown as Task[]);
+        } catch (error) {
+            console.error("Error fetching tasks:", error);
+        }
+    }
+
     return (
         <View style={styles.body}>
-            <Image
-                source={require('@/assets/images/partial-react-logo.png')}
-                style={styles.reactLogo}
-            />
-            <Text style={styles.titleContainer}>Dashboard screen</Text>
+            {noValues ? (
+                <Text variant="bodyMedium">No data available</Text>
+            ) : (
+                <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
+                    <View style={{marginBottom:15}}>
+                        <View style={{ flexDirection: "row", marginTop: 15 }}>
+                            <Text variant="bodyMedium">Complete</Text>
+                            <Badge style={{ backgroundColor: "green", marginBottom: 10, marginLeft: 10 }}></Badge>
+                        </View>
+                        <View style={{ flexDirection: "row" }}>
+                            <Text variant="bodyMedium">Incomplete</Text>
+                            <Badge style={{ backgroundColor: "darkorange", marginBottom: 10, marginLeft: 10 }}></Badge>
+                        </View>
+                    </View>
+                    <PieChart data={pieData} textColor="white" textSize={12} radius={150} />
+                    <BarChart data={barData} horizontal />
+                </View>
+            )}
         </View>
     );
 }
