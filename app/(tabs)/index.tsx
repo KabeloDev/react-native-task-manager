@@ -87,15 +87,15 @@ export default function HomeScreen() {
     }
   }
 
-  // const handleDeleteTask = async (taskId: string) => {
-  //   try {
-  //     await database.deleteDocument(DATABASE_ID, TASKS_COLLECTION_ID, taskId);
-  //     console.log("Task deleted:", taskId);
-  //     fetchTasks();
-  //   } catch (error) {
-  //     console.error("Error deleting task:", error);
-  //   }
-  // }
+  const handleDeleteTask = async (taskId: string) => {
+    try {
+      await database.deleteDocument(DATABASE_ID, TASKS_COLLECTION_ID, taskId);
+      console.log("Task deleted:", taskId);
+      fetchTasks();
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  }
 
 
 
@@ -128,7 +128,7 @@ export default function HomeScreen() {
               </View>
               <Divider style={styles.divider}></Divider>
               <View style={{ flexDirection: "row", justifyContent: "flex-end", alignItems: "center" }}>
-                <IconButton size={20} icon="delete-outline"></IconButton>
+                <IconButton size={20} icon="delete-outline" onPress={() => handleDeleteTask(task.$id)}></IconButton>
                 <IconButton size={20} icon="square-edit-outline" onPress={() => openModal(true, task.$id)}></IconButton>
               </View>
               <Portal>
