@@ -149,16 +149,17 @@ export default function HomeScreen() {
                       <Text variant="titleLarge">Update Task</Text>
                       <TextInput defaultValue={titleUpdate} label="Title" mode="outlined" onChangeText={setTitle} />
                       <TextInput defaultValue={descriptionUpdate} label="Description" mode="outlined" multiline numberOfLines={4} style={{ marginBottom: 10 }} onChangeText={setDescription} />
-                      <SegmentedButtons style={{ marginBottom: 20 }}
+                      <SegmentedButtons 
                         value={frequency} onValueChange={(value) => setFrequency(value as Frequency)}
-                        buttons={FREQUENCY_OPTIONS.map((frequency) => ({
-                          value: frequency,
-                          label: frequency.charAt(0).toUpperCase() + frequency.slice(1),
+                        buttons={FREQUENCY_OPTIONS.map((item) => ({
+                          value: item,
+                          label: item.charAt(0).toUpperCase() + item.slice(1),
+                          style:{ marginBottom: 20, backgroundColor: frequency === item ? '#74b1c2ff' : 'transparent' }
                         }))} />
                       <Button mode="contained-tonal" onPress={() => setIsComplete(!isComplete)} style={{ marginBottom: 20, backgroundColor: theme.colors.background }}>
                         {isComplete ? "Mark as Complete" : "Mark as Incomplete"}
                       </Button>
-                      <Button mode="contained" disabled={!title || !description} onPress={() => handleUpdateTask(id)}>Save</Button>
+                      <Button mode="contained" style={{backgroundColor: '#74b1c2ff'}} disabled={!title || !description} onPress={() => handleUpdateTask(id)}>Save</Button>
                     </ScrollView>
                   </View>
                 </Modal>
