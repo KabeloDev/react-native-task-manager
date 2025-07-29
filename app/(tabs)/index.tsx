@@ -19,6 +19,7 @@ export default function HomeScreen() {
   const [description, setDescription] = useState("");
   const [frequency, setFrequency] = useState<Frequency>("daily");
   const [isComplete, setIsComplete] = useState(false);
+  const [id, setId] = useState("");
 
   const theme = useTheme();
 
@@ -53,6 +54,49 @@ export default function HomeScreen() {
     }
   }
 
+  const openModal = async (status: boolean, taskId: string) => {
+    console.log('Modal status: ' + status + ' Task Id: ' + taskId);
+    setIsModalVisible(status);
+    setId(taskId);
+  }
+
+  const handleUpdateTask = async (taskId: string) => {
+    console.log("Task to be updated:", taskId);
+    setIsModalVisible(false);
+    try {
+      const task = tasks?.find(t => t.$id === taskId);
+      console.log('Task Id: ', task?.$id)
+      console.log('Task completion status: ', task?.isComplete);
+      if (!task) return;
+
+
+      await database.updateDocument(DATABASE_ID, TASKS_COLLECTION_ID, taskId,
+      {
+          user_id: user?.$id,
+          title: title || task.title,
+          description: description || task.description,
+          frequency: frequency || task.frequency,
+          isComplete: isComplete
+      });
+      console.log('task data:', task);
+      console.log('isComplete: ' + isComplete + ', for task ID: ' + taskId);
+      console.log("Task updated:", taskId);
+      fetchTasks();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // const handleDeleteTask = async (taskId: string) => {
+  //   try {
+  //     await database.deleteDocument(DATABASE_ID, TASKS_COLLECTION_ID, taskId);
+  //     console.log("Task deleted:", taskId);
+  //     fetchTasks();
+  //   } catch (error) {
+  //     console.error("Error deleting task:", error);
+  //   }
+  // }
+
 
 
   return (
@@ -78,11 +122,14 @@ export default function HomeScreen() {
               <Text variant="titleMedium">{task.title}</Text>
               <Text variant="bodyMedium">{task.description}</Text>
               <Text variant="bodySmall">{task.frequency}</Text>
-              <Badge style={{ backgroundColor: isComplete ? "green":  "darkorange", fontWeight: "bold", fontSize: 15 }}></Badge>
+              <View style={styles.isCompleteView}>
+                <Text style={styles.isCompleteText}>{task.isComplete ? "Complete" : "Incomplete"}</Text>
+                <Badge style={{ backgroundColor: task.isComplete ? "green":  "darkorange"}}></Badge>
+              </View>
               <Divider style={styles.divider}></Divider>
               <View style={{ flexDirection: "row", justifyContent: "flex-end", alignItems: "center" }}>
                 <IconButton size={20} icon="delete-outline"></IconButton>
-                <IconButton size={20} icon="square-edit-outline"></IconButton>
+                <IconButton size={20} icon="square-edit-outline" onPress={() => openModal(true, task.$id)}></IconButton>
               </View>
               <Portal>
                 <Modal
@@ -91,7 +138,7 @@ export default function HomeScreen() {
                   dismissable={true}
                   onDismiss={() => setIsModalVisible(false)}
                 >
-                  <View style={styles.editview}>
+                  <View style={styles.editview} >
                     <ScrollView>
                       <Text variant="titleLarge">Update Task</Text>
                       <TextInput label="Title" mode="outlined" onChangeText={setTitle} />
@@ -105,7 +152,7 @@ export default function HomeScreen() {
                       <Button icon={isComplete ? "tray-remove" : "checkbox-marked-circle-outline"} mode="contained-tonal" onPress={() => setIsComplete(!isComplete)} style={{ marginBottom: 20, backgroundColor: theme.colors.background }}>
                         {isComplete ? "Mark as Incomplete" : "Mark as Complete"}
                       </Button>
-                      <Button mode="contained">Save</Button>
+                      <Button mode="contained" onPress={() => handleUpdateTask(id)}>Save</Button>
                     </ScrollView>
                   </View>
                 </Modal>
@@ -150,5 +197,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#ccc",
     height: 1,
 
+  },
+  isCompleteView: {
+    flex:1, 
+    flexDirection:"row", 
+    justifyContent:"flex-end"
+  },
+  isCompleteText: {
+    marginRight:10
   }
 });
