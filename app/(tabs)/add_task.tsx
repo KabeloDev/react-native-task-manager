@@ -47,21 +47,23 @@ export default function AddTaskScreen() {
                 style={styles.reactLogo}
             />
             <View style={styles.taskForm}>
-                <TextInput label="Title" mode="outlined" onChangeText={setTitle} style={styles.formMargin} />
-                <TextInput label="Description" mode="outlined" multiline numberOfLines={4} style={styles.formMargin} onChangeText={setDescription} />
-                <SegmentedButtons style={styles.formMargin}
-                    value={frequency} onValueChange={(value) => setFrequency(value as Frequency)}
-                    buttons={FREQUENCY_OPTIONS.map((item) => ({
-                        value: item,
-                        label: item.charAt(0).toUpperCase() + item.slice(1),
-                        style: { backgroundColor: frequency === item ? '#74b1c2ff' : 'transparent' }
-                    }))} />
+                <View style={styles.addView}>
+                    <TextInput label="Title" mode="outlined" onChangeText={setTitle} style={styles.formMargin} />
+                    <TextInput label="Description" mode="outlined" multiline numberOfLines={4} style={styles.formMargin} onChangeText={setDescription} />
+                    <SegmentedButtons style={styles.formMargin}
+                        value={frequency} onValueChange={(value) => setFrequency(value as Frequency)}
+                        buttons={FREQUENCY_OPTIONS.map((item) => ({
+                            value: item,
+                            label: item.charAt(0).toUpperCase() + item.slice(1),
+                            style: { backgroundColor: frequency === item ? '#74b1c2ff' : 'transparent' }
+                        }))} />
 
-                <Button mode="contained" disabled={!title || !description} onPress={handleSubmit} style={styles.addButton}>
-                    Add Task
-                </Button>
+                    <Button mode="contained" disabled={!title || !description} onPress={handleSubmit} style={styles.addButton}>
+                        Add Task
+                    </Button>
 
-                {error && <Text style={{ color: theme.colors.error, marginTop: 10 }}>{error}</Text>}
+                    {error && <Text style={{ color: theme.colors.error, marginTop: 10 }}>{error}</Text>}
+                </View>
             </View>
         </View>
     );
@@ -84,16 +86,21 @@ const styles = StyleSheet.create({
         marginTop: 20,
         backgroundColor: '#74b1c2ff'
     },
-    titleContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 8,
-    },
     reactLogo: {
         height: 178,
         width: 290,
         bottom: 0,
         left: 0,
         position: 'absolute',
+    },
+    addView: {
+        flex: 1,
+        padding: 30,
+        backgroundColor: "#fff",
+        elevation: 1,
+        borderRadius: 8,
+        margin: 16,
+        height: '10%',
+        marginVertical: 250
     },
 });
