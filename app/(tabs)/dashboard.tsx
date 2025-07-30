@@ -57,9 +57,9 @@ export default function DashboardScreen() {
                 <Text variant="bodyMedium">No data available</Text>
             ) : (
                 <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
-                    <View style={{marginBottom:15}}>
-                        <View style={{ flexDirection: "row", marginTop: 15 }}>
-                            <Text variant="bodyMedium">Complete</Text>
+                    <View>
+                        <View style={{ flexDirection: "row", marginTop: 50 }}>
+                            <Text style={{marginRight: 10}} variant="bodyMedium">Complete</Text>
                             <Badge style={{ backgroundColor: "green", marginBottom: 10, marginLeft: 10 }}></Badge>
                         </View>
                         <View style={{ flexDirection: "row" }}>
@@ -67,8 +67,12 @@ export default function DashboardScreen() {
                             <Badge style={{ backgroundColor: "darkorange", marginBottom: 10, marginLeft: 10 }}></Badge>
                         </View>
                     </View>
-                    <PieChart data={pieData} textColor="white" textSize={12} radius={150} showText />
-                    <BarChart data={barData} horizontal />
+                    <View style={styles.chartView}>
+                        <PieChart data={pieData} textColor="white" textSize={12} radius={150} showText />
+                    </View>
+                    <View style={styles.chartView}>
+                        <BarChart data={barData} horizontal />
+                    </View>
                 </View>
             )}
         </View>
@@ -93,4 +97,13 @@ const styles = StyleSheet.create({
         left: 0,
         position: 'absolute',
     },
+    chartView: {
+        flex: 1,
+        padding: 30,
+        backgroundColor: "#fff",
+        elevation: 1,
+        borderRadius: 8,
+        margin: 16,
+        height: '30%',
+   },
 });
