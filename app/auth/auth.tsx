@@ -1,7 +1,7 @@
 import { useAuth } from "@/app_context/auth_context";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
+import { Image, KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
 import { Button, Text, TextInput, useTheme } from "react-native-paper";
 
 export default function AuthScreen() {
@@ -62,64 +62,70 @@ export default function AuthScreen() {
 
   return <KeyboardAvoidingView behavior={Platform.OS === "android" ? "height" : "padding"} style={{ flex: 1 }}>
     <View style={{ flex: 1, justifyContent: "center", padding: 20 }} >
-      <Text style={styles.headerText}>{isSignUp ? "Create Account" : "Welcome Back"}</Text>
+      <Image
+        source={require('@/assets/images/partial-react-logo.png')}
+        style={styles.reactLogo}
+      />
+      <View style={styles.loginForm}>
+        <Text style={styles.headerText}>{isSignUp ? "Create Account" : "Welcome Back"}</Text>
 
-      {isSignUp ?
-        <>
-          <TextInput
-            label="Username"
-            placeholder="your username"
-            autoCapitalize="none"
-            keyboardType="default"
-            mode="outlined"
-            style={styles.userNameInput}
-            onChangeText={setName} />
+        {isSignUp ?
+          <>
+            <TextInput
+              label="Username"
+              placeholder="your username"
+              autoCapitalize="none"
+              keyboardType="default"
+              mode="outlined"
+              style={styles.userNameInput}
+              onChangeText={setName} />
 
-          <TextInput
-            label="Email"
-            placeholder="example@gmail.com"
-            autoCapitalize="none"
-            keyboardType="email-address"
-            mode="outlined"
-            style={styles.emailInput}
-            onChangeText={setEmail} />
+            <TextInput
+              label="Email"
+              placeholder="example@gmail.com"
+              autoCapitalize="none"
+              keyboardType="email-address"
+              mode="outlined"
+              style={styles.emailInput}
+              onChangeText={setEmail} />
 
-          <TextInput
-            label="Password"
-            placeholder="your password"
-            autoCapitalize="none"
-            secureTextEntry={true}
-            keyboardType="default"
-            mode="outlined"
-            style={styles.passwordInput}
-            onChangeText={setPassword} />
-        </>
-        :
-        <>
-          <TextInput
-            label="Email"
-            placeholder="example@gmail.com"
-            autoCapitalize="none"
-            keyboardType="email-address"
-            mode="outlined"
-            style={styles.emailInput}
-            onChangeText={setEmail} />
+            <TextInput
+              label="Password"
+              placeholder="your password"
+              autoCapitalize="none"
+              secureTextEntry={true}
+              keyboardType="default"
+              mode="outlined"
+              style={styles.passwordInput}
+              onChangeText={setPassword} />
+          </>
+          :
+          <>
+            <TextInput
+              label="Email"
+              placeholder="example@gmail.com"
+              autoCapitalize="none"
+              keyboardType="email-address"
+              mode="outlined"
+              style={styles.emailInput}
+              onChangeText={setEmail} />
 
-          <TextInput
-            label="Password"
-            placeholder="your password"
-            autoCapitalize="none"
-            secureTextEntry={true}
-            keyboardType="default"
-            mode="outlined"
-            style={styles.passwordInput}
-            onChangeText={setPassword} />
-        </>
-      }
-      {error ? <Text style={{ color: theme.colors.error }}>{error}</Text> : null}
+            <TextInput
+              label="Password"
+              placeholder="your password"
+              autoCapitalize="none"
+              secureTextEntry={true}
+              keyboardType="default"
+              mode="outlined"
+              style={styles.passwordInput}
+              onChangeText={setPassword} />
+          </>
+        }
+        {error ? <Text style={{ color: theme.colors.error }}>{error}</Text> : null}
 
-      <Button mode="contained" style={styles.button} onPress={handleAuth}>{isSignUp ? "Sign Up" : "Sign In"}</Button>
-      <Button mode="text" onPress={toggleAuthMode}>{isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}</Button>
+        <Button mode="contained" style={styles.button} onPress={handleAuth}>{isSignUp ? "Sign Up" : "Sign In"}</Button>
+        <Button mode="text" onPress={toggleAuthMode}>{isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}</Button>
+      </View>
     </View>
   </KeyboardAvoidingView>
 }
@@ -147,5 +153,22 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 10,
     backgroundColor: "#74b1c2ff",
+  },
+  reactLogo: {
+    height: 250,
+    width: 400,
+    bottom: -25,
+    left: 0,
+    position: 'absolute',
+  },
+  loginForm: {
+    flex: 1,
+    padding: 30,
+    backgroundColor: "#fff",
+    elevation: 1,
+    borderRadius: 8,
+    margin: 16,
+    height: '10%',
+    marginVertical: 250
   },
 });
