@@ -18,7 +18,9 @@ export default function DashboardScreen() {
 
     const completeCount = tasks?.filter(task => task.isComplete === true).length;
     const inCompleteCount = tasks?.filter(task => task.isComplete === false).length;
-    const pieData = [{ value: completeCount!, color: "green", text: "Complete", showText: true }, { value: inCompleteCount!, color: "darkorange", text: "Incomplete", showText: true }];
+    const completePercentage = completeCount! / tasks?.length! * 100;
+    const inCompletePercentage = inCompleteCount! / tasks?.length! * 100;
+    const pieData = [{ value: completeCount!, color: "green", text: `${completePercentage.toFixed(1)}%`, showText: true }, { value: inCompleteCount!, color: "darkorange", text:  `${inCompletePercentage.toFixed(1)}%`, showText: true }];
     const barData = [{ value: completeCount, frontColor: "green" }, { value: inCompleteCount, frontColor: "darkorange" }];
     const noValues = pieData.every(item => item.value === 0);
 
@@ -65,7 +67,7 @@ export default function DashboardScreen() {
                             <Badge style={{ backgroundColor: "darkorange", marginBottom: 10, marginLeft: 10 }}></Badge>
                         </View>
                     </View>
-                    <PieChart data={pieData} textColor="white" textSize={12} radius={150} />
+                    <PieChart data={pieData} textColor="white" textSize={12} radius={150} showText />
                     <BarChart data={barData} horizontal />
                 </View>
             )}
