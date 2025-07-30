@@ -29,7 +29,6 @@ export default function HomeScreen() {
   const FREQUENCY_OPTIONS = ["Daily", "Weekly", "Monthly"];
   type Frequency = (typeof FREQUENCY_OPTIONS)[number];
 
-
   console.log("User in HomeScreen:", user);
 
   useFocusEffect(

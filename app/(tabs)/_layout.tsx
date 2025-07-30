@@ -50,10 +50,10 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="sign_out"
+        name="options"
         options={{
-          title: 'Sign Out',
-          tabBarIcon: ({ color }) => <Ionicons size={28} name="log-out" color={color} />
+          title: 'Options',
+          tabBarIcon: ({ color }) => <Ionicons size={28} name="options" color={color} />
         }}
       />
     </Tabs>
