@@ -9,7 +9,7 @@ import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Query } from 'react-native-appwrite';
-import { Badge, Button, Divider, IconButton, Modal, Portal, SegmentedButtons, Text, TextInput, useTheme } from 'react-native-paper';
+import { Badge, Button, Divider, Icon, IconButton, Modal, Portal, SegmentedButtons, Text, TextInput, useTheme } from 'react-native-paper';
 
 export default function HomeScreen() {
   const { user } = useAuth();
@@ -115,18 +115,19 @@ export default function HomeScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
+         <Icon size={40} source={'account'}></Icon>
         <ThemedText type="title">Hi, {user?.name}!</ThemedText>
       </ThemedView>
       <View>
         {tasks?.length === 0 ? (
           <Text variant="bodyMedium" style={{ padding: 50 }}>No tasks found. Start by creating one!</Text>
         ) : (tasks?.map((task) => (
-          <View key={task.$id} style={{ backgroundColor: "#dfdfdfff", padding: 16, borderRadius: 8, marginBottom: 16 }}>
+          <View key={task.$id} style={styles.taskContainer}>
 
             <ScrollView showsVerticalScrollIndicator={false}>
 
-              <Text variant="titleMedium">{task.title}</Text>
-              <Text variant="bodyMedium">{task.description}</Text>
+              <Text variant="titleLarge">{task.title}</Text>
+              <Text variant="titleMedium">{task.description}</Text>
               <Text variant="bodySmall">{task.frequency}</Text>
               <View style={styles.isCompleteView}>
                 <Text style={styles.isCompleteText}>{task.isComplete ? "Complete" : "Incomplete"}</Text>
@@ -134,7 +135,7 @@ export default function HomeScreen() {
               </View>
               <Divider style={styles.divider}></Divider>
               <View style={{ flexDirection: "row", justifyContent: "flex-end", alignItems: "center" }}>
-                <IconButton size={20} icon="delete-outline" onPress={() => handleDeleteTask(task.$id)}></IconButton>
+                <IconButton style={{marginRight:30}} size={20} icon="delete-outline" onPress={() => handleDeleteTask(task.$id)}></IconButton>
                 <IconButton size={20} icon="square-edit-outline" onPress={() => openModal(true, task.$id, task.title, task.description)}></IconButton>
               </View>
               <Portal>
@@ -146,9 +147,9 @@ export default function HomeScreen() {
                 >
                   <View style={styles.editview} >
                     <ScrollView>
-                      <Text variant="titleLarge">Update Task</Text>
-                      <TextInput defaultValue={titleUpdate} label="Title" mode="outlined" onChangeText={setTitle} />
-                      <TextInput defaultValue={descriptionUpdate} label="Description" mode="outlined" multiline numberOfLines={4} style={{ marginBottom: 10 }} onChangeText={setDescription} />
+                      <Text style={{marginBottom: 15}} variant="titleLarge">Update Task</Text>
+                      <TextInput style={{marginBottom: 15}} defaultValue={titleUpdate} label="Title" mode="outlined" onChangeText={setTitle} />
+                      <TextInput style={{marginBottom: 15}} defaultValue={descriptionUpdate} label="Description" mode="outlined" multiline numberOfLines={4} onChangeText={setDescription} />
                       <SegmentedButtons 
                         value={frequency} onValueChange={(value) => setFrequency(value as Frequency)}
                         buttons={FREQUENCY_OPTIONS.map((item) => ({
@@ -181,9 +182,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  taskContainer: {
+    backgroundColor: "#dfdfdfff", 
+    padding: 16, 
+    borderRadius: 8, 
+    marginBottom: 16, 
+    elevation: 10 
   },
   reactLogo: {
     height: 178,
