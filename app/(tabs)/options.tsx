@@ -1,4 +1,4 @@
-import { account } from '@/app_context/appwrite';
+import { account, database, DATABASE_ID, TASKS_COLLECTION_ID } from '@/app_context/appwrite';
 import { useAuth } from '@/app_context/auth_context';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
@@ -11,19 +11,34 @@ export default function SignOutScreen() {
     const { signOut, user } = useAuth();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [username, setUserName] = useState('');
-    
-    
 
-     const handleUpdateUsername = async () => {
+
+
+    const handleUpdateUsername = async () => {
         setIsModalVisible(false);
         try {
-          if (!user) return;
-    
-          await account.updateName(username);
-          user.name = username;
-         
+            if (!user) return;
+
+            await account.updateName(username);
+            user.name = username;
+
         } catch (error) {
-          console.log(error);
+            console.log(error);
+        }
+    }
+
+    const handleDeleteTasks = async () => {
+        try {
+            const response = await database.listDocuments(DATABASE_ID, TASKS_COLLECTION_ID);
+            const tasks = response.documents;
+
+            for (const task of tasks) {
+                await database.deleteDocument(DATABASE_ID, TASKS_COLLECTION_ID, task.$id);
+            }
+
+            router.replace('/');
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -35,16 +50,16 @@ export default function SignOutScreen() {
             />
             <View style={styles.button}>
                 <Button onPress={async () => {
-                   
+                    handleDeleteTasks();
                 }}>
-                    <Text style={styles.signOutText}>Change Theme</Text>
+                    <Text style={styles.buttonText}>Clear All Tasks</Text>
                 </Button>
             </View>
             <View style={styles.button}>
                 <Button onPress={async () => {
                     setIsModalVisible(true);
                 }}>
-                    <Text style={styles.signOutText}>Update Username</Text>
+                    <Text style={styles.buttonText}>Update Username</Text>
                 </Button>
             </View>
             <View style={styles.button}>
@@ -52,26 +67,26 @@ export default function SignOutScreen() {
                     await signOut();
                     router.replace("/auth/auth");
                 }}>
-                    <Text style={styles.signOutText}>Sign Out</Text>
+                    <Text style={styles.buttonText}>Sign Out</Text>
                 </Button>
             </View>
 
             <Portal>
                 <Modal
-                  visible={isModalVisible}
-                  contentContainerStyle={{ backgroundColor: "white", padding: 20, margin: 20, borderRadius: 8, minHeight: 500 }}
-                  dismissable={true}
-                  onDismiss={() => setIsModalVisible(false)}
+                    visible={isModalVisible}
+                    contentContainerStyle={{ backgroundColor: "white", padding: 20, margin: 20, borderRadius: 8, minHeight: 500 }}
+                    dismissable={true}
+                    onDismiss={() => setIsModalVisible(false)}
                 >
-                  <View style={styles.editview} >
-                    <ScrollView>
-                      <Text style={{marginBottom: 25}} variant="titleLarge">Update Username</Text>
-                      <TextInput style={{marginBottom: 50}} defaultValue={user?.name} label="Username" mode="outlined" onChangeText={setUserName} />                      
-                      <Button mode="contained" style={{backgroundColor: '#74b1c2ff'}} disabled={!username} onPress={() => handleUpdateUsername()}>Save</Button>
-                    </ScrollView>
-                  </View>
+                    <View style={styles.editview} >
+                        <ScrollView>
+                            <Text style={{ marginBottom: 25 }} variant="titleLarge">Update Username</Text>
+                            <TextInput style={{ marginBottom: 50 }} defaultValue={user?.name} label="Username" mode="outlined" onChangeText={setUserName} />
+                            <Button mode="contained" style={{ backgroundColor: '#74b1c2ff' }} disabled={!username} onPress={() => handleUpdateUsername()}>Save</Button>
+                        </ScrollView>
+                    </View>
                 </Modal>
-              </Portal>
+            </Portal>
         </View>
     );
 }
@@ -104,16 +119,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    signOutText: {
+    buttonText: {
         fontSize: 18,
         fontWeight: 'bold',
         color: 'white',
     },
     editview: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    margin: 16,
-  },
+        flex: 1,
+        padding: 16,
+        backgroundColor: "#fff",
+        borderRadius: 8,
+        margin: 16,
+    },
 });
