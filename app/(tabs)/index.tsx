@@ -19,7 +19,7 @@ export default function HomeScreen() {
   const [description, setDescription] = useState("");
   const [titleUpdate, setTitleUpdate] = useState("");
   const [descriptionUpdate, setDescriptionUpdate] = useState("");
-  const [frequency, setFrequency] = useState<Frequency>("daily");
+  const [frequency, setFrequency] = useState<Frequency>("Daily");
   const [isComplete, setIsComplete] = useState(false);
   const [id, setId] = useState("");
 
