@@ -1,50 +1,48 @@
-# Welcome to your Expo app 👋
+<h1>Advice Generator</h1>
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+ ### [YouTube Demonstration](https://youtu.be/9kwwN6IHJ18)
 
-## Get started
+<h2>Description</h2>
+Get advice with a single tap!
+<br />
 
-1. Install dependencies
 
-   ```bash
-   npm install
-   ```
+<h2>Languages and Utilities Used</h2>
 
-2. Start the app
+- <b>Dart & Flutter</b>
+- <b>Advice API (https://api.adviceslip.com/)</b>
 
-   ```bash
-   npx expo start
-   ```
+<h2>Environments Used </h2>
 
-In the output, you'll find options to open the app in a
+- <b>Windows 11</b>
+- <b>Visual studio code<b>
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+<h2>Program walk-through:</h2>
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+<p align="center">
+Splash screen: <br/>
+<img src="https://i.imgur.com/ZNkGRsU.png" height="500%" width="100%" />
+<br />
+<br />
+Login screen: <br/>
+<img src="https://i.imgur.com/EQ1R0Nq.png" height="500%" width="100%" />
+<br />
+<br />
+Sign in screen: <br/>
+<img src="https://i.imgur.com/K1bRPPY.png" height="500%" width="100%" />
+<br />
+<br />
+Sign up screen: <br/>
+<img src="https://i.imgur.com/Mtcnt0E.png" height="500%" width="100%" />
+<br />
+<br />
+Home screen: <br/>
+<img src="https://i.imgur.com/AnX7Zr4.png" height="500%" width="100%" />
+<br />
+<br />
+No internet: <br/>
+<img src="https://i.imgur.com/TU6xicj.png" height="500%" width="100%" />
+<br />
+<br />
 
-## Get a fresh project
 
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
